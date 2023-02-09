@@ -85,7 +85,7 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     protected AnalysisResult analyzeImage(ImageProxy image, int rotationDegrees) {
         try {
             if (mModule == null) {
-                mModule = Module.load(MainActivity.assetFilePath(getApplicationContext(), "yolov8.torchscript"));
+                mModule = Module.load(MainActivity.assetFilePath(getApplicationContext(), "custom.torchscript"));
             }
         } catch (IOException e) {
             Log.e("Object Detection", "Error reading assets", e);

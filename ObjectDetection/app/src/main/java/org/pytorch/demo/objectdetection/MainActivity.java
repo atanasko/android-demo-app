@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
         });
 
         try {
-            mModule = Module.load(MainActivity.assetFilePath(getApplicationContext(), "yolov8.torchscript"));
+            mModule = Module.load(MainActivity.assetFilePath(getApplicationContext(), "custom.torchscript"));
             BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("classes.txt")));
             String line;
             List<String> classes = new ArrayList<>();
