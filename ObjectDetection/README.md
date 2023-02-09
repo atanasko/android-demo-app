@@ -19,7 +19,7 @@ To Test Run the Object Detection Android App, follow the steps below:
 
 If you don't have the PyTorch environment set up, you can use the model file `custom.torchscript` from the `android-demo-app/ObjectDetection/app/src/main/assets` directory, then skip the rest of this step and go to step 2 directly.
 
-This `custom.torchscript` model is exported from custom trained model on  [model](https://github.com/sunn-e/Google-Image-Downloader-Rocket-Dataset).
+This `custom.torchscript` model is exported from custom trained model on  [Rocket-Dataset](https://github.com/sunn-e/Google-Image-Downloader-Rocket-Dataset).
 
 In YOLOv8 version command line tools are added to help export the model and generate TorchScript-formatted YOLOv8 model named `yolov8.torchscript` for mobile apps.
 
