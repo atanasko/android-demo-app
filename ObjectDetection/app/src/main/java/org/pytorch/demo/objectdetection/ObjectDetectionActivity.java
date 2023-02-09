@@ -16,7 +16,6 @@ import androidx.annotation.WorkerThread;
 import androidx.camera.core.ImageProxy;
 
 import org.pytorch.IValue;
-import org.pytorch.LiteModuleLoader;
 import org.pytorch.Module;
 import org.pytorch.Tensor;
 import org.pytorch.torchvision.TensorImageUtils;
@@ -86,7 +85,7 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     protected AnalysisResult analyzeImage(ImageProxy image, int rotationDegrees) {
         try {
             if (mModule == null) {
-                mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "yolov5s.torchscript.ptl"));
+                mModule = Module.load(MainActivity.assetFilePath(getApplicationContext(), "best.torchscript"));
             }
         } catch (IOException e) {
             Log.e("Object Detection", "Error reading assets", e);
@@ -99,8 +98,8 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, PrePostProcessor.mInputWidth, PrePostProcessor.mInputHeight, true);
 
         final Tensor inputTensor = TensorImageUtils.bitmapToFloat32Tensor(resizedBitmap, PrePostProcessor.NO_MEAN_RGB, PrePostProcessor.NO_STD_RGB);
-        IValue[] outputTuple = mModule.forward(IValue.from(inputTensor)).toTuple();
-        final Tensor outputTensor = outputTuple[0].toTensor();
+        Tensor outputTensor = mModule.forward(IValue.from(inputTensor)).toTensor();
+
         final float[] outputs = outputTensor.getDataAsFloatArray();
 
         float imgScaleX = (float)bitmap.getWidth() / PrePostProcessor.mInputWidth;
