@@ -25,6 +25,9 @@ import androidx.camera.core.Preview;
 import androidx.camera.core.PreviewConfig;
 import androidx.core.app.ActivityCompat;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
     private static final int REQUEST_CODE_CAMERA_PERMISSION = 200;
     private static final String[] PERMISSIONS = {Manifest.permission.CAMERA};
@@ -34,6 +37,9 @@ public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
     protected abstract int getContentViewLayoutId();
 
     protected abstract TextureView getCameraPreviewTextureView();
+    private Deque frameTimestamps = new ArrayDeque <Long>(5);
+    private int frameRateWindow = 8;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,22 @@ public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
             if (SystemClock.elapsedRealtime() - mLastAnalysisResultTime < 500) {
                 return;
             }
+
+            // Keep track of frames analyzed
+            long currentTime = SystemClock.elapsedRealtime();
+            frameTimestamps.push(currentTime);
+
+            // Compute the FPS using a moving average
+            while (frameTimestamps.size() >= frameRateWindow)
+                frameTimestamps.removeLast();
+            Long first = (Long) frameTimestamps.peekFirst();
+            Long last = (Long) frameTimestamps.peekLast();
+            Long timestampFirst = first != null ? first : currentTime;
+            Long timestampLast = last != null ? last : currentTime;
+            double framesPerSecond = 1.0 / ((timestampFirst - timestampLast) /
+                    (double) frameTimestamps.size()) * 1000.0;
+
+            System.out.println("----------------------------------" + framesPerSecond);
 
             final R result = analyzeImage(image, rotationDegrees);
             if (result != null) {
