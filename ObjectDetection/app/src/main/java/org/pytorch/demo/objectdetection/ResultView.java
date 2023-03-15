@@ -68,6 +68,7 @@ public class ResultView extends View {
         }
 
         mFPSText.setTextSize(32);
+        mFPSText.setColor(Color.RED);
         canvas.drawText("FPS: " + fps, 50, 50, mFPSText);
     }
 
