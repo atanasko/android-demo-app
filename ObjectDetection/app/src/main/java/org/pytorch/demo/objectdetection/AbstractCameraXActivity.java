@@ -89,9 +89,9 @@ public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
                 .build();
         final ImageAnalysis imageAnalysis = new ImageAnalysis(imageAnalysisConfig);
         imageAnalysis.setAnalyzer((image, rotationDegrees) -> {
-            if (SystemClock.elapsedRealtime() - mLastAnalysisResultTime < 500) {
-                return;
-            }
+//            if (SystemClock.elapsedRealtime() - mLastAnalysisResultTime < 500) {
+//                return;
+//            }
 
             // Keep track of frames analyzed
             long currentTime = SystemClock.elapsedRealtime();
@@ -112,6 +112,7 @@ public abstract class AbstractCameraXActivity<R> extends BaseModuleActivity {
             final R result = analyzeImage(image, rotationDegrees);
             if (result != null) {
                 mLastAnalysisResultTime = SystemClock.elapsedRealtime();
+                ((ObjectDetectionActivity.AnalysisResult)result).setFPS((int)framesPerSecond);
                 runOnUiThread(() -> applyToUiAnalyzeImageResult(result));
             }
         });

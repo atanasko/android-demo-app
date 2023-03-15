@@ -27,7 +27,10 @@ public class ResultView extends View {
 
     private Paint mPaintRectangle;
     private Paint mPaintText;
+    private Paint mFPSText;
     private ArrayList<Result> mResults;
+
+    private int fps;
 
     public ResultView(Context context) {
         super(context);
@@ -38,6 +41,7 @@ public class ResultView extends View {
         mPaintRectangle = new Paint();
         mPaintRectangle.setColor(Color.YELLOW);
         mPaintText = new Paint();
+        mFPSText = new Paint();
     }
 
     @Override
@@ -62,9 +66,16 @@ public class ResultView extends View {
             mPaintText.setTextSize(32);
             canvas.drawText(String.format("%s %.2f", PrePostProcessor.mClasses[result.classIndex], result.score), result.rect.left + TEXT_X, result.rect.top + TEXT_Y, mPaintText);
         }
+
+        mFPSText.setTextSize(32);
+        canvas.drawText("FPS: " + fps, 50, 50, mFPSText);
     }
 
     public void setResults(ArrayList<Result> results) {
         mResults = results;
+    }
+
+    public void setFPS(int fps) {
+        this.fps = fps;
     }
 }

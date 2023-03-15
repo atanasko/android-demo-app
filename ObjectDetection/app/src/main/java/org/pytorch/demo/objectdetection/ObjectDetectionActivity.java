@@ -32,8 +32,17 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     static class AnalysisResult {
         private final ArrayList<Result> mResults;
 
+        private int fps;
+
         public AnalysisResult(ArrayList<Result> results) {
             mResults = results;
+        }
+
+        int getFps() {
+            return fps;
+        }
+        public void setFPS(int fps) {
+            this.fps = fps;
         }
     }
 
@@ -54,6 +63,7 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     protected void applyToUiAnalyzeImageResult(AnalysisResult result) {
         mResultView.setResults(result.mResults);
         mResultView.invalidate();
+        mResultView.setFPS(result.getFps());
     }
 
     private Bitmap imgToBitmap(Image image) {
